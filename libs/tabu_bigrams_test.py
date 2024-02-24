@@ -1,6 +1,6 @@
 import unittest
 
-from libs.tabu_bigrams import parse_raw
+from libs.tabu_bigrams import count_tabu_free, parse_raw
 
 class TestA2Q3StrParser(unittest.TestCase):
     def test_single_str(self):
@@ -34,6 +34,20 @@ class TestA2Q3StrParser(unittest.TestCase):
         self.assertEqual(parsed.m, 10)
         self.assertEqual(parsed.n, 10)
         self.assertListEqual(parsed.bigrams, ["00", "11", "22", "33", "44", "55"])
+
+
+class TestCountTabuFree(unittest.TestCase):
+    def test_no_tabus(self):
+        result = count_tabu_free("4 1")
+        self.assertEqual(result, 3)
+
+    def test_one(self):
+        result = count_tabu_free("4 2")
+        self.assertEqual(result, 12)
+
+    def test_two(self):
+        result = count_tabu_free("4 2 11 12 23")
+        self.assertEqual(result, 9)
 
 if __name__ == "__main__":
     unittest.main()

@@ -36,7 +36,33 @@ def parse_raw(raw: str, delimeter: str = " ") -> TabuBigramParams:
     return TabuBigramParams(int(m), int(n), bigrams)
 
 
+def i_to_str(n: int, base: int = 10) -> str:
+    chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    if n < base:
+        return chars[n]
+    else:
+        return i_to_str(n // base, base) + chars[n % base]
+    
 def count_tabu_free(raw: str) -> int:
     parsed = parse_raw(raw)
     print(parsed)
-    return 0
+
+    count = 0
+    for i in range(pow(parsed.m, parsed.n)):
+        raw_str = i_to_str(i, parsed.m)
+        str_rep = raw_str.rjust(parsed.n, '0')
+        
+        print(f"{str(i).rjust(2, '0')}: {str_rep}")
+        if str_rep.startswith('0'):
+            print(f"{str_rep} starts with '0'")
+            continue
+        if str_rep in parsed.bigrams:
+            print(f"{str_rep} is a bigram'")
+            continue
+
+
+        count += 1
+
+    return count
+
